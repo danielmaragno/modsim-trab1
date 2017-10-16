@@ -1,0 +1,19 @@
+{
+	"TEC1": {
+		"metodo": "constante",
+		"valor": 3000
+	},
+	"TEC2": {
+		"metodo": "constante",
+		"valor": 5000
+	},
+
+	"TS1": {
+		"metodo": "constante",
+		"valor": 2000
+	},
+	"TS2": {
+		"metodo": "constante",
+		"valor": 2000
+	}
+}
