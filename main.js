@@ -80,7 +80,7 @@ function consomeRecurso1(){
 			console.log("Entidade", entidade, "utilizou recurso 1");
 			if(status1 == "fail")
 				clearInterval(t);
-			if(!filaServer1.length){
+			else if(!filaServer1.length){
 				status1 = "ok";
 				clearInterval(t);	
 			}
