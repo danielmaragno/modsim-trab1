@@ -34,7 +34,7 @@
 		},
 		"em_falha": {
 			"metodo": "constante",
-			"valor": 2000	
+			"valor": 15000	
 		}
 	}
 	

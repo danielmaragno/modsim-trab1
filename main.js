@@ -1,12 +1,15 @@
+
+
 const config = require('./config.json');
 const R 	 = require('./lib/randomGen.js');
 const entidades	 = require('./objects/entidades.js');
+const server	 = require('./objects/server.js');
 
 
 
 
 setInterval(chegaTipo1, R.generate(config.TEC1));
-// setInterval(chegaTipo2, R.generate(config.TEC2));
+setInterval(chegaTipo2, R.generate(config.TEC2));
 
 
 // Setup CHEGADAS
@@ -24,124 +27,106 @@ function chegaTipo2 () {
 	direcionaEntidade(entidade);
 }
 
-// Setup Proccess
-var filaServer1 = [];
-var filaServer2 = [];
-
-// ok, busy, fail
-var status1 = "ok";
-var status2 = "ok";
-
+// Setup PROCESSAMENTO
+var server1 = new server.server(
+	"SERVER 1", 
+	R.generate(config.TS1), 
+	R.generate(config.FALHA1.entre_falhas), 
+	R.generate(config.FALHA1.em_falha)
+);
+var server2 = new server.server(
+	"SERVER 2", 
+	R.generate(config.TS2), 
+	R.generate(config.FALHA2.entre_falhas), 
+	R.generate(config.FALHA2.em_falha)
+);
 
 function direcionaEntidade(entidade){
 	
 	if(entidade.getTipo() == 1){
-		if(status1 != "fail")
-			buscaRecurso(1, entidade);
-		else if(status2 != "fail")
-			buscaRecurso(2, entidade);
-		else
+		if(server1.getStatus() != "fail")
+			buscaRecurso(server1, entidade);
+		
+		else if(server2.getStatus() != "fail")
+			buscaRecurso(server2, entidade);
+		
+		else{
+			console.log("DELETE", entidade);
 			delete entidade;
+		}
 
 	}
 
 	else if(entidade.getTipo() == 2){
-		if(status2 != "fail")
-			buscaRecurso(2, entidade);
-		else if(status1 != "fail")
-			buscaRecurso(1, entidade);
-		else
+		if(server2.getStatus() != "fail")
+			buscaRecurso(server2, entidade);
+		
+		else if(server1.getStatus() != "fail")
+			buscaRecurso(server1, entidade);
+		
+		else{
+			console.log("DELETE", entidade);
 			delete entidade;
+		}
 	}
 }
 
-function buscaRecurso(recurso, entidade){
-	if(recurso == 1 && status1 == "busy")
-		filaServer1.push(entidade);
-	else if(recurso == 1 && status1 == "ok"){
-		filaServer1.push(entidade);
-		consomeRecurso1();
-	}
-	
-	else if(recurso == 2 && status2 == "busy")
-		filaServer2.push(entidade);
-	else if(recurso == 2 && status2 == "ok"){
-		filaServer2.push(entidade);
-		consomeRecurso2();
+function buscaRecurso(server, entidade){
+	let status = server.getStatus();
+	if(status == "busy")
+		server.pushFila(entidade);
+
+	else if(status == "ready"){
+		server.pushFila(entidade);
+		consomeRecurso(server);
 	}
 };
 
-function consomeRecurso1(){
-	status1 = "busy";
+function consomeRecurso(server) {
+	server.setStatus("busy");
+
 	let t = setInterval(
 		()=>{
-			let entidade = filaServer1[0];
-			filaServer1.shift();
-			console.log("Entidade", entidade, "utilizou recurso 1");
-			if(status1 == "fail")
+			let entidade = server.getFilaEspera()[0];
+			server.shiftFila();
+			console.log("Entidade", entidade, "utilizou", server.getName());
+
+			if(server.getStatus() == "fail")
 				clearInterval(t);
-			else if(!filaServer1.length){
-				status1 = "ok";
-				clearInterval(t);	
-			}
-			
-		}, 
-		R.generate(config.TS1)
-	)
-};
-
-function consomeRecurso2(){
-	status2 = "busy";
-	let t = setInterval(
-		()=>{
-			let entidade = filaServer2[0];
-			filaServer2.shift();
-			console.log("Entidade", entidade, "utilizou recurso 2");
-			if(status2 == "fail")
+			else if(!server.getFilaEspera().length){
+				server.setStatus("ready");
 				clearInterval(t);
-			else if(!filaServer2.length){
-				status2 = "ok";
-				clearInterval(t);	
 			}
-			
 		}, 
-		R.generate(config.TS2)
-	)
-};
+		server.getTS()
+	);
+}
 
+// Setup FALHAS
 
-// Setup Falhas
-setInterval(()=>{
-	status1 = "fail";
-	console.log("SERVER 1 FALHOU");
+// startFalha(server1);
+startFalha(server2);
 
+function startFalha(server){
 	let t = setInterval(()=>{
-		if(filaServer1.length)
-			consomeRecurso1();
-		else
-			status1 = "ok";
-
-		console.log("SERVER 1 OK");
+		server.setStatus("fail");
+		console.log(server.getName(),"FALHOU");
 		clearInterval(t);
+		handleFalha(server);
 
-	} ,R.generate(config.FALHA1.em_falha))
+	}, server.getTEntreFalhas());
+};
 
-}, R.generate(config.FALHA1.entre_falhas));
+function handleFalha(server){
+	let t = setInterval(()=>{
+		if(server.getFilaEspera().length)
+			consomeRecurso(server);
+		else
+			server.setStatus("ready");
 
+		console.log(server.getName(),"OK");
+		clearInterval(t);
+		startFalha(server);
 
-// setInterval(()=>{
-// 	status2 = "fail";
-// 	console.log("SERVER 2 FALHOU");
-
-// 	let t = setInterval(()=>{
-// 		if(filaServer2.length)
-// 			consomeRecurso2();
-// 		else
-// 			status2 = "ok";
-
-// 		console.log("SERVER 2 OK");
-// 		clearInterval(t);
-
-// 	} ,R.generate(config.FALHA2.em_falha))
-
-// }, R.generate(config.FALHA2.entre_falhas));
+	}, server.getTFalha());
+};
