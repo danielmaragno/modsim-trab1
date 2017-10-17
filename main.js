@@ -1,12 +1,4 @@
-
-
-const config = require('./config.json');
-const R 	 = require('./lib/randomGen.js');
-const entidades	 = require('./objects/entidades.js');
-const server	 = require('./objects/server.js');
-
-
-
+// "use strict";
 
 setInterval(chegaTipo1, R.generate(config.TEC1));
 setInterval(chegaTipo2, R.generate(config.TEC2));
@@ -15,26 +7,26 @@ setInterval(chegaTipo2, R.generate(config.TEC2));
 // Setup CHEGADAS
 
 function chegaTipo1 () {
-	let entidade = new entidades.entidade(1, new Date());
+	let entidade = new Entidade(1, new Date());
 	console.log("chegou tipo 1", entidade);
 	direcionaEntidade(entidade);
 	
 }
 
 function chegaTipo2 () {
-	let entidade = new entidades.entidade(2, new Date());
+	let entidade = new Entidade(2, new Date());
 	console.log("chegou tipo 2", entidade);
 	direcionaEntidade(entidade);
 }
 
 // Setup PROCESSAMENTO
-var server1 = new server.server(
+var server1 = new Server(
 	"SERVER 1", 
 	R.generate(config.TS1), 
 	R.generate(config.FALHA1.entre_falhas), 
 	R.generate(config.FALHA1.em_falha)
 );
-var server2 = new server.server(
+var server2 = new Server(
 	"SERVER 2", 
 	R.generate(config.TS2), 
 	R.generate(config.FALHA2.entre_falhas), 

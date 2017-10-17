@@ -1,9 +1,9 @@
 "use strict";
 
 
-var exports = module.exports = {};
 
-exports.server = class {
+class Server {
+
 	constructor(name, TS, TEntreFalhas, TFalha){
 		this.name = name;
 		this.TS = TS;

@@ -1,9 +1,9 @@
 "use strict";
 
 
-var exports = module.exports = {};
 
-exports.entidade = class {
+class Entidade {
+
 	constructor(Tipo, TChegada){
 		this.Tipo = Tipo;
 		this.TChegada = TChegada; 
