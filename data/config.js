@@ -36,6 +36,8 @@ var config = {
 			"metodo": "constante",
 			"valor": 15000	
 		}
-	}
+	},
+
+	"SimulationTime": 60000
 	
 };
