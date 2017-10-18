@@ -33,12 +33,31 @@ function main($scope){
 	startFalha(server1);
 	startFalha(server2);
 
+	// $scope SETUP
+	$scope.TEC1 = TEC1;
+	$scope.TEC2 = TEC2;
+
+	$scope.server1 = server1;
+	$scope.server2 = server2;
+	$scope.SimulationTime = config.SimulationTime;
+
+	$scope.entidades = {
+		"tipo1Chegada": 0,
+		"tipo1Completou": 0,
+		"tipo1Deletado": 0,
+		"tipo1TrocaServer": 0,
+		
+		"tipo2Chegada": 0,
+		"tipo2Completou": 0,
+		"tipo2Deletado": 0,
+		"tipo2TrocaServer": 0,
+	};
+
 	// Handle end of simulation
 	let t = setInterval(()=>{
 		encerraSimulacao();
 	}, config.SimulationTime);
 
-	$scope.deleted = 0;
 
 	function encerraSimulacao(){
 		flagSimulation = false;
@@ -73,11 +92,15 @@ function main($scope){
 	function direcionaEntidade(entidade){
 		
 		if(entidade.getTipo() == 1){
+			$scope.entidades["tipo1Chegada"] += 1;
+
 			if(server1.getStatus() != "fail")
 				buscaRecurso(server1, entidade);
 			
-			else if(server2.getStatus() != "fail")
+			else if(server2.getStatus() != "fail"){
+				$scope.entidades.tipo1TrocaServer += 1;
 				buscaRecurso(server2, entidade);
+			}
 			
 			else{
 				console.log("DELETE", entidade);
@@ -87,17 +110,23 @@ function main($scope){
 		}
 
 		else if(entidade.getTipo() == 2){
+			$scope.entidades["tipo2Chegada"] += 1;
+
 			if(server2.getStatus() != "fail")
 				buscaRecurso(server2, entidade);
 			
-			else if(server1.getStatus() != "fail")
+			else if(server1.getStatus() != "fail"){
+				$scope.entidades.tipo2TrocaServer += 1;
 				buscaRecurso(server1, entidade);
+			}
 			
 			else{
 				console.log("DELETE", entidade);
 				deleteEntidade(entidade)
 			}
 		}
+
+		$scope.$apply();
 	}
 
 	function buscaRecurso(server, entidade){
@@ -119,7 +148,9 @@ function main($scope){
 				if(flagSimulation){
 					let entidade = server.getFilaEspera()[0];
 					server.shiftFila($scope);
+					
 					console.log("Entidade", entidade, "utilizou", server.getName());
+					finalizaEntidade(entidade);
 
 					if(server.getStatus() == "fail")
 						clearInterval(t);
@@ -133,9 +164,24 @@ function main($scope){
 		);
 	}
 
+	function finalizaEntidade(entidade){
+		if(entidade.getTipo() == 1)
+			$scope.entidades["tipo1Completou"] += 1;
+		else
+			$scope.entidades["tipo2Completou"] += 1;
+
+		$scope.$apply();
+
+	}
+
 	function deleteEntidade(entidade){
 		delete entidade;
-		$scope.deleted += 1;
+		
+		if(entidade.getTipo() == 1)
+			$scope.entidades["tipo1Deletado"] += 1;
+		else
+			$scope.entidades["tipo2Deletado"] += 1;
+
 		$scope.$apply();
 	}
 
@@ -172,12 +218,4 @@ function main($scope){
 		}, server.getTFalha());
 	};
 
-
-	// $scope SETUP
-	$scope.TEC1 = TEC1;
-	$scope.TEC2 = TEC2;
-
-	$scope.server1 = server1;
-	$scope.server2 = server2;
-	$scope.SimulationTime = config.SimulationTime;
 }

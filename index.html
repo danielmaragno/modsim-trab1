@@ -140,7 +140,7 @@
 			                			<td>{{server2.filaEspera.length}}</td>
 			                			<td>{{server2.avgFilaEsperaLength | number:2}}</td>
 			                		</tr>
-			                		<tr>
+			                		<tr class="active">
 			                			<td>Total</td>
 			                			<td></td>
 			                			<td>{{server1.filaEspera.length + server2.filaEspera.length}}</td>
@@ -150,12 +150,32 @@
 								
 								<table class="table table-bordered table-hover">
 			                		<tr>
-			                			<th>Simulação</th>
-			                			<th>Deletados</th>
+			                			<th>Entidade</th>
+			                			<th>Chegadas</th>
+			                			<th>Terminou</th>
+			                			<th>Falhou</th>
+			                			<th>Trocou Servidor</th>
 			                		</tr>
 			                		<tr>
-			                			<td>{{flagSimulation}}</td>
-			                			<td>{{deleted}}</td>
+			                			<td>Tipo 1</td>
+			                			<td>{{entidades.tipo1Chegada}}</td>
+			                			<td>{{entidades.tipo1Completou}}</td>
+			                			<td>{{entidades.tipo1Deletado}}</td>
+			                			<td>{{entidades.tipo1TrocaServer}}</td>
+			                		</tr>
+			                		<tr>
+			                			<td>Tipo 2</td>
+			                			<td>{{entidades.tipo2Chegada}}</td>
+			                			<td>{{entidades.tipo2Completou}}</td>
+			                			<td>{{entidades.tipo2Deletado}}</td>
+			                			<td>{{entidades.tipo2TrocaServer}}</td>
+			                		</tr>
+			                		<tr class="active">
+			                			<td>Total</td>
+			                			<td>{{entidades.tipo1Chegada + entidades.tipo2Chegada}}</td>
+			                			<td>{{entidades.tipo1Completou + entidades.tipo2Completou}}</td>
+			                			<td>{{entidades.tipo1Deletado + entidades.tipo2Deletado}}</td>
+			                			<td>{{entidades.tipo1TrocaServer + entidades.tipo2TrocaServer}}</td>
 			                		</tr>
 			                	</table>
 
