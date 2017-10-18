@@ -34,19 +34,22 @@ class Server {
 		return this.status;
 	}
 
-	setStatus(status){
+	setStatus(status,$scope){
 		this.status = status;
+		$scope.$apply();
 	}
 
 	getFilaEspera(){
 		return this.filaEspera;
 	}
 
-	pushFila(entidade){
+	pushFila(entidade, $scope){
 		this.filaEspera.push(entidade);
+		$scope.$apply();
 	}
 
-	shiftFila(entidade){
+	shiftFila($scope){
 		this.filaEspera.shift();
+		$scope.$apply();
 	}
 }

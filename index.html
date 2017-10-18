@@ -20,7 +20,7 @@
 		<div class="row">
 			
 			<div class="col-lg-4">
-				<div class="panel panel-default">
+				<div class="panel panel-default" style="height: 585px;">
 	                <div class="panel-heading">
 	                    Informações Gerais
 	                </div>
@@ -107,12 +107,31 @@
 			<!-- col-md-4 -->
             
             <div class="col-lg-8">
-            	<div class="panel panel-default" style="height: 585px;">
+            	<div class="panel panel-default">
 	                <div class="panel-heading">
 	                    Tela de Simulação
 	                </div>
 	                <!-- /.panel-heading -->
-	                <div class="panel-body"></div>
+	                <div class="panel-body">
+	                	<table class="table table-bordered table-hover">
+	                		<tr>
+	                			<th>Recurso</th>
+	                			<th>Status</th>
+	                			<th>Fila de Espera</th>
+	                		</tr>
+	                		<tr>
+	                			<td>{{server1.getName()}}</td>
+	                			<td>{{server1.status}}</td>
+	                			<td>{{server1.filaEspera.length}}</td>
+	                		</tr>
+	                		<tr>
+	                			<td>{{server2.getName()}}</td>
+	                			<td>{{server2.status}}</td>
+	                			<td>{{server2.filaEspera.length}}</td>
+	                		</tr>
+	                	</table>
+
+	                </div>
                 </div>
             </div>
             <!--  col-lg-8 -->

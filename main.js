@@ -91,27 +91,27 @@ function main($scope){
 	function buscaRecurso(server, entidade){
 		let status = server.getStatus();
 		if(status == "busy")
-			server.pushFila(entidade);
+			server.pushFila(entidade, $scope);
 
 		else if(status == "ready"){
-			server.pushFila(entidade);
+			server.pushFila(entidade, $scope);
 			consomeRecurso(server);
 		}
 	};
 
 	function consomeRecurso(server) {
-		server.setStatus("busy");
+		server.setStatus("busy", $scope);
 
 		let t = setInterval(
 			()=>{
 				let entidade = server.getFilaEspera()[0];
-				server.shiftFila();
+				server.shiftFila($scope);
 				console.log("Entidade", entidade, "utilizou", server.getName());
 
 				if(server.getStatus() == "fail")
 					clearInterval(t);
 				else if(!server.getFilaEspera().length){
-					server.setStatus("ready");
+					server.setStatus("ready", $scope);
 					clearInterval(t);
 				}
 			}, 
@@ -123,7 +123,7 @@ function main($scope){
 
 	function startFalha(server){
 		let t = setInterval(()=>{
-			server.setStatus("fail");
+			server.setStatus("fail", $scope);
 			console.log(server.getName(),"FALHOU");
 			clearInterval(t);
 			if(flagSimulation) handleFalha(server);
@@ -136,7 +136,7 @@ function main($scope){
 			if(server.getFilaEspera().length)
 				consomeRecurso(server);
 			else
-				server.setStatus("ready");
+				server.setStatus("ready", $scope);
 
 			console.log(server.getName(),"OK");
 			clearInterval(t);
