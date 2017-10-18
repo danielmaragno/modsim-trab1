@@ -16,6 +16,7 @@ class Server {
 		// statistics
 		this.lastDate = startDate;
 		this.filaEsperaLengthTime = [];
+		this.avgFilaEsperaLength = 0;
 	}
 
 	getName(){

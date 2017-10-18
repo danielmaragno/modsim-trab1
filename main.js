@@ -7,6 +7,7 @@ app.controller('Controller', main);
 // MAIN SETUP
 function main($scope){
 	var flagSimulation = true;
+	$scope.flagSimulation = flagSimulation;
 
 	var startDate = new Date();
 
@@ -34,6 +35,12 @@ function main($scope){
 
 	// Handle end of simulation
 	let t = setInterval(()=>{
+		encerraSimulacao();
+	}, config.SimulationTime);
+
+	$scope.deleted = 0;
+
+	function encerraSimulacao(){
 		flagSimulation = false;
 		clearInterval(t_chega1);
 		clearInterval(t_chega2);
@@ -41,12 +48,9 @@ function main($scope){
 		delete startFalha;
 		console.log("FIM DA SIMULACAO!");
 
-		numeroMedioEntidadesFilas(server1, server2, $scope);
-
-	}, config.SimulationTime);
-
-	$scope.deleted = 0;
-
+		numeroMedioEntidadesFilas(server1, server2);
+		$scope.$apply();
+	}
 
 	// Setup CHEGADAS
 
@@ -112,15 +116,17 @@ function main($scope){
 
 		let t = setInterval(
 			()=>{
-				let entidade = server.getFilaEspera()[0];
-				server.shiftFila($scope);
-				console.log("Entidade", entidade, "utilizou", server.getName());
+				if(flagSimulation){
+					let entidade = server.getFilaEspera()[0];
+					server.shiftFila($scope);
+					console.log("Entidade", entidade, "utilizou", server.getName());
 
-				if(server.getStatus() == "fail")
-					clearInterval(t);
-				else if(!server.getFilaEspera().length){
-					server.setStatus("ready", $scope);
-					clearInterval(t);
+					if(server.getStatus() == "fail")
+						clearInterval(t);
+					else if(!server.getFilaEspera().length){
+						server.setStatus("ready", $scope);
+						clearInterval(t);
+					}
 				}
 			}, 
 			server.getTS()
@@ -174,10 +180,4 @@ function main($scope){
 	$scope.server1 = server1;
 	$scope.server2 = server2;
 	$scope.SimulationTime = config.SimulationTime;
-	$scope.flagSimulation = flagSimulation;
-
-	// Statistics declaration
-	$scope.avgLength1 = "";
-	$scope.avgLength2 = "";
-
 }

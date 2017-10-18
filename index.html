@@ -129,7 +129,7 @@
 			                				{{server1.status}}
 			                			</td>
 			                			<td>{{server1.filaEspera.length}}</td>
-			                			<td>{{avgLength1 | number:2}}</td>
+			                			<td>{{server1.avgFilaEsperaLength | number:2}}</td>
 			                		</tr>
 			                		<tr>
 			                			<td>{{server2.getName()}}</td>
@@ -138,7 +138,13 @@
 			                				{{server2.status}}
 			                			</td>
 			                			<td>{{server2.filaEspera.length}}</td>
-			                			<td>{{avgLength2 | number:2}}</td>
+			                			<td>{{server2.avgFilaEsperaLength | number:2}}</td>
+			                		</tr>
+			                		<tr>
+			                			<td>Total</td>
+			                			<td></td>
+			                			<td>{{server1.filaEspera.length + server2.filaEspera.length}}</td>
+			                			<td>{{(server1.avgFilaEsperaLength + server2.avgFilaEsperaLength)/2 | number:2}}</td>
 			                		</tr>
 			                	</table>
 								
