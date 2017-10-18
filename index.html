@@ -10,7 +10,7 @@
 	  <div class="container-fluid">
 	    <div class="navbar-header">
 	      <a class="navbar-brand" href="#">
-	        Simulador
+	        Simulador - Duas Filas e Dois Servidores
 	      </a>
 	    </div>
 	  </div>
@@ -107,32 +107,72 @@
 			<!-- col-md-4 -->
             
             <div class="col-lg-8">
-            	<div class="panel panel-default">
-	                <div class="panel-heading">
-	                    Tela de Simulação
-	                </div>
-	                <!-- /.panel-heading -->
-	                <div class="panel-body">
-	                	<table class="table table-bordered table-hover">
-	                		<tr>
-	                			<th>Recurso</th>
-	                			<th>Status</th>
-	                			<th>Fila de Espera</th>
-	                		</tr>
-	                		<tr>
-	                			<td>{{server1.getName()}}</td>
-	                			<td>{{server1.status}}</td>
-	                			<td>{{server1.filaEspera.length}}</td>
-	                		</tr>
-	                		<tr>
-	                			<td>{{server2.getName()}}</td>
-	                			<td>{{server2.status}}</td>
-	                			<td>{{server2.filaEspera.length}}</td>
-	                		</tr>
-	                	</table>
+            	<div class="row">
+            		<div class="col-md-12">
+		            	<div class="panel panel-default">
+			                <div class="panel-heading">
+			                    Tela de Simulação
+			                </div>
+			                <!-- /.panel-heading -->
+			                <div class="panel-body">
+			                	<table class="table table-bordered table-hover">
+			                		<tr>
+			                			<th>Recurso</th>
+			                			<th>Status</th>
+			                			<th>Fila de Espera</th>
+			                		</tr>
+			                		<tr>
+			                			<td>{{server1.getName()}}</td>
+			                			<td 
+			                				ng-class="server1.status == 'busy'? 'success' : server1.status == 'fail' ? 'danger' : ''">
+			                				{{server1.status}}
+			                			</td>
+			                			<td>{{server1.filaEspera.length}}</td>
+			                		</tr>
+			                		<tr>
+			                			<td>{{server2.getName()}}</td>
+			                			<td 
+			                				ng-class="server2.status == 'busy'? 'success' : server2.status == 'fail' ? 'danger' : ''">
+			                				{{server2.status}}
+			                			</td>
+			                			<td>{{server2.filaEspera.length}}</td>
+			                		</tr>
+			                	</table>
+								
+								<table class="table table-bordered table-hover">
+			                		<tr>
+			                			<th>Simulação</th>
+			                			<th>Deletados</th>
+			                		</tr>
+			                		<tr>
+			                			<td>{{flagSimulation}}</td>
+			                			<td>{{deleted}}</td>
+			                		</tr>
+			                	</table>
 
-	                </div>
-                </div>
+							</div>
+		                </div> 
+		                <!-- Panel -->
+					</div>
+					<!-- col-md-12 -->
+
+					<div class="col-md-12">
+						<div class="panel panel-default">
+			                <div class="panel-heading">
+			                    Resultados
+			                </div>
+			                <!-- /.panel-heading -->
+			                <div class="panel-body">
+			                	<table class="table table-bordered table-hover">
+			                		
+			                	</table>
+							</div>
+		                </div> 
+		                <!-- Panel -->
+					</div>
+
+            	</div>
+            	<!-- row -->
             </div>
             <!--  col-lg-8 -->
 

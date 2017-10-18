@@ -37,7 +37,7 @@ function main($scope){
 		console.log("FIM DA SIMULACAO!");
 	}, config.SimulationTime);
 
-
+	$scope.deleted = 0;
 
 
 	// Setup CHEGADAS
@@ -69,7 +69,7 @@ function main($scope){
 			
 			else{
 				console.log("DELETE", entidade);
-				delete entidade;
+				deleteEntidade(entidade)
 			}
 
 		}
@@ -83,7 +83,7 @@ function main($scope){
 			
 			else{
 				console.log("DELETE", entidade);
-				delete entidade;
+				deleteEntidade(entidade)
 			}
 		}
 	}
@@ -119,6 +119,12 @@ function main($scope){
 		);
 	}
 
+	function deleteEntidade(entidade){
+		$scope.deleted += 1;
+		delete entidade;
+	}
+
+
 	// Setup FALHAS
 
 	function startFalha(server){
@@ -153,5 +159,6 @@ function main($scope){
 	$scope.server1 = server1;
 	$scope.server2 = server2;
 	$scope.SimulationTime = config.SimulationTime;
+	$scope.flagSimulation = flagSimulation;
 
 }
