@@ -13,6 +13,15 @@
 	        Simulador - Duas Filas e Dois Servidores
 	      </a>
 	    </div>
+	    <div class="collapse navbar-collapse">
+	    	<form class="navbar-form navbar-right">
+	    		<button class="btn btn-success active" ng-show="flagSimulation=='preSimulation'" ng-click="handleStartEndButtonClick()">Iniciar Simulação</button>
+
+	    		<button class="btn btn-danger active"  ng-show="flagSimulation==true" ng-click="handleStartEndButtonClick()">Finalizar Simulação</button>
+
+	    		<button class="btn btn-primary active" ng-show="flagSimulation==false" ng-click="handleStartEndButtonClick()">Preparar Nova Simulação</button>
+	    	</form>
+	    </div>
 	  </div>
 	</nav>
 	

@@ -6,61 +6,82 @@ app.controller('Controller', main);
 
 // MAIN SETUP
 function main($scope){
-	var flagSimulation = true;
-	$scope.flagSimulation = flagSimulation;
+	$scope.handleStartEndButtonClick = function(){
+		if($scope.flagSimulation == "preSimulation"){
+			$scope.flagSimulation = true;
+			startSimulation();
+		}
+		else if($scope.flagSimulation){
+			encerraSimulacao();
+		}
+		else
+			window.location.reload();
+	};
+
+	$scope.flagSimulation = "preSimulation";
 
 	var startDate = new Date();
 
 	var TEC1 = R.generate(config.TEC1);
 	var TEC2 = R.generate(config.TEC2);
 
-	let t_chega1 = setInterval(chegaTipo1, TEC1);
-	let t_chega2 = setInterval(chegaTipo2, TEC2);
-	var server1 = new Server(
-		"SERVER 1", 
-		R.generate(config.TS1), 
-		R.generate(config.FALHA1.entre_falhas), 
-		R.generate(config.FALHA1.em_falha),
-		startDate
-	);
-	var server2 = new Server(
-		"SERVER 2", 
-		R.generate(config.TS2), 
-		R.generate(config.FALHA2.entre_falhas), 
-		R.generate(config.FALHA2.em_falha),
-		startDate
-	);
-	startFalha(server1);
-	startFalha(server2);
+	let t_chega1, t_chega2;
+	let server1, server2;
 
-	// $scope SETUP
-	$scope.TEC1 = TEC1;
-	$scope.TEC2 = TEC2;
 
-	$scope.server1 = server1;
-	$scope.server2 = server2;
-	$scope.SimulationTime = config.SimulationTime;
+	function startSimulation(){
+		t_chega1 = setInterval(chegaTipo1, TEC1);
+		t_chega2 = setInterval(chegaTipo2, TEC2);
+		server1 = new Server(
+			"SERVER 1", 
+			R.generate(config.TS1), 
+			R.generate(config.FALHA1.entre_falhas), 
+			R.generate(config.FALHA1.em_falha),
+			startDate
+		);
+		server2 = new Server(
+			"SERVER 2", 
+			R.generate(config.TS2), 
+			R.generate(config.FALHA2.entre_falhas), 
+			R.generate(config.FALHA2.em_falha),
+			startDate
+		);
+		startFalha(server1);
+		startFalha(server2);
 
-	$scope.entidades = {
-		"tipo1Chegada": 0,
-		"tipo1Completou": 0,
-		"tipo1Deletado": 0,
-		"tipo1TrocaServer": 0,
-		
-		"tipo2Chegada": 0,
-		"tipo2Completou": 0,
-		"tipo2Deletado": 0,
-		"tipo2TrocaServer": 0,
+		// $scope SETUP
+		$scope.TEC1 = TEC1;
+		$scope.TEC2 = TEC2;
+
+		$scope.server1 = server1;
+		$scope.server2 = server2;
+		$scope.SimulationTime = config.SimulationTime;
+
+		$scope.entidades = {
+			"tipo1Chegada": 0,
+			"tipo1Completou": 0,
+			"tipo1Deletado": 0,
+			"tipo1TrocaServer": 0,
+			
+			"tipo2Chegada": 0,
+			"tipo2Completou": 0,
+			"tipo2Deletado": 0,
+			"tipo2TrocaServer": 0,
+		};
+
+		// Handle end of simulation
+		let t = setInterval(()=>{
+			encerraSimulacao(t);
+		}, config.SimulationTime);
 	};
 
-	// Handle end of simulation
-	let t = setInterval(()=>{
-		encerraSimulacao();
-	}, config.SimulationTime);
+	
+
+	
 
 
-	function encerraSimulacao(){
-		flagSimulation = false;
+	function encerraSimulacao(t){
+		$scope.flagSimulation = false;
 		clearInterval(t_chega1);
 		clearInterval(t_chega2);
 		clearInterval(t);
@@ -105,7 +126,7 @@ function main($scope){
 			
 			else{
 				console.log("DELETE", entidade);
-				deleteEntidade(entidade)
+				deleteEntidade(entidade);
 			}
 
 		}
@@ -146,7 +167,7 @@ function main($scope){
 
 		let t = setInterval(
 			()=>{
-				if(flagSimulation){
+				if($scope.flagSimulation){
 					console.log("Entidade", entidade, "utilizou", server.getName());
 					finalizaEntidade(entidade);
 
@@ -198,7 +219,7 @@ function main($scope){
 	function startFalha(server){
 		let t = setInterval(()=>{
 			clearInterval(t);
-			if(flagSimulation) {
+			if($scope.flagSimulation) {
 				server.setStatus("fail", $scope);
 				console.log(server.getName(),"FALHOU");
 				handleFalha(server);
@@ -210,7 +231,7 @@ function main($scope){
 	function handleFalha(server){
 		let t = setInterval(()=>{
 			clearInterval(t);
-			if(flagSimulation) {
+			if($scope.flagSimulation) {
 				if(server.getFilaEspera().length){
 					let entidade = getEntidadeFila(server);
 					consomeRecurso(server, entidade);
