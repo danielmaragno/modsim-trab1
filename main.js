@@ -8,6 +8,8 @@ app.controller('Controller', main);
 function main($scope){
 	var flagSimulation = true;
 
+	var startDate = new Date();
+
 	var TEC1 = R.generate(config.TEC1);
 	var TEC2 = R.generate(config.TEC2);
 
@@ -17,17 +19,20 @@ function main($scope){
 		"SERVER 1", 
 		R.generate(config.TS1), 
 		R.generate(config.FALHA1.entre_falhas), 
-		R.generate(config.FALHA1.em_falha)
+		R.generate(config.FALHA1.em_falha),
+		startDate
 	);
 	var server2 = new Server(
 		"SERVER 2", 
 		R.generate(config.TS2), 
 		R.generate(config.FALHA2.entre_falhas), 
-		R.generate(config.FALHA2.em_falha)
+		R.generate(config.FALHA2.em_falha),
+		startDate
 	);
 	startFalha(server1);
 	startFalha(server2);
 
+	// Handle end of simulation
 	let t = setInterval(()=>{
 		flagSimulation = false;
 		clearInterval(t_chega1);
@@ -35,6 +40,9 @@ function main($scope){
 		clearInterval(t);
 		delete startFalha;
 		console.log("FIM DA SIMULACAO!");
+
+		numeroMedioEntidadesFilas(server1, server2, $scope);
+
 	}, config.SimulationTime);
 
 	$scope.deleted = 0;
@@ -120,8 +128,9 @@ function main($scope){
 	}
 
 	function deleteEntidade(entidade){
-		$scope.deleted += 1;
 		delete entidade;
+		$scope.deleted += 1;
+		$scope.$apply();
 	}
 
 
@@ -129,24 +138,30 @@ function main($scope){
 
 	function startFalha(server){
 		let t = setInterval(()=>{
-			server.setStatus("fail", $scope);
-			console.log(server.getName(),"FALHOU");
 			clearInterval(t);
-			if(flagSimulation) handleFalha(server);
+			if(flagSimulation) {
+				server.setStatus("fail", $scope);
+				console.log(server.getName(),"FALHOU");
+				handleFalha(server);
+			}
 
 		}, server.getTEntreFalhas());
 	};
 
 	function handleFalha(server){
 		let t = setInterval(()=>{
-			if(server.getFilaEspera().length)
-				consomeRecurso(server);
-			else
-				server.setStatus("ready", $scope);
-
-			console.log(server.getName(),"OK");
 			clearInterval(t);
-			if(flagSimulation) startFalha(server);
+			if(flagSimulation) {
+				if(server.getFilaEspera().length)
+					consomeRecurso(server);
+				else
+					server.setStatus("ready", $scope);
+
+				console.log(server.getName(),"OK");
+				startFalha(server);
+			}
+
+
 
 		}, server.getTFalha());
 	};
@@ -160,5 +175,9 @@ function main($scope){
 	$scope.server2 = server2;
 	$scope.SimulationTime = config.SimulationTime;
 	$scope.flagSimulation = flagSimulation;
+
+	// Statistics declaration
+	$scope.avgLength1 = "";
+	$scope.avgLength2 = "";
 
 }

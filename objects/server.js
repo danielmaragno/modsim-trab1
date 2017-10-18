@@ -4,7 +4,7 @@
 
 class Server {
 
-	constructor(name, TS, TEntreFalhas, TFalha){
+	constructor(name, TS, TEntreFalhas, TFalha, startDate){
 		this.name = name;
 		this.TS = TS;
 		this.TEntreFalhas = TEntreFalhas;
@@ -12,6 +12,10 @@ class Server {
 
 		this.status = "ready";
 		this.filaEspera = [];
+
+		// statistics
+		this.lastDate = startDate;
+		this.filaEsperaLengthTime = [];
 	}
 
 	getName(){
@@ -44,12 +48,25 @@ class Server {
 	}
 
 	pushFila(entidade, $scope){
+		this.storeFilaEsperaLengthTime(new Date(), this.filaEspera.length);
 		this.filaEspera.push(entidade);
+		
 		$scope.$apply();
 	}
 
 	shiftFila($scope){
+		this.storeFilaEsperaLengthTime(new Date(), this.filaEspera.length);
 		this.filaEspera.shift();
+
 		$scope.$apply();
+	}
+
+	// collect statistics
+	storeFilaEsperaLengthTime(currentDate, length){
+		this.filaEsperaLengthTime.push({
+			'time': currentDate - this.lastDate,
+			'length': length
+		});
+		this.lastDate = currentDate;
 	}
 }

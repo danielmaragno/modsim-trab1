@@ -120,6 +120,7 @@
 			                			<th>Recurso</th>
 			                			<th>Status</th>
 			                			<th>Fila de Espera</th>
+			                			<th>Tamanho Médio da Fila</th>
 			                		</tr>
 			                		<tr>
 			                			<td>{{server1.getName()}}</td>
@@ -128,6 +129,7 @@
 			                				{{server1.status}}
 			                			</td>
 			                			<td>{{server1.filaEspera.length}}</td>
+			                			<td>{{avgLength1 | number:2}}</td>
 			                		</tr>
 			                		<tr>
 			                			<td>{{server2.getName()}}</td>
@@ -136,6 +138,7 @@
 			                				{{server2.status}}
 			                			</td>
 			                			<td>{{server2.filaEspera.length}}</td>
+			                			<td>{{avgLength2 | number:2}}</td>
 			                		</tr>
 			                	</table>
 								
@@ -183,6 +186,7 @@
 
 	<script type="text/javascript" src="data/config.js"></script>
 	<script type="text/javascript" src="lib/randomGen.js"></script>
+	<script type="text/javascript" src="lib/statistics.js"></script>
 	<script type="text/javascript" src="objects/entidade.js"></script>
 	<script type="text/javascript" src="objects/server.js"></script>
 	<script type="text/javascript" src="main.js"></script>
