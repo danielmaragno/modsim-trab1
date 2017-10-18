@@ -111,16 +111,17 @@
             		<div class="col-md-12">
 		            	<div class="panel panel-default">
 			                <div class="panel-heading">
-			                    Tela de Simulação
+			                    Simulação
 			                </div>
 			                <!-- /.panel-heading -->
 			                <div class="panel-body">
-			                	<table class="table table-bordered table-hover">
-			                		<tr>
+			                	<table class="table table-bordered">
+			                		<tr class="info">
 			                			<th>Recurso</th>
 			                			<th>Status</th>
 			                			<th>Fila de Espera</th>
-			                			<th>Tamanho Médio da Fila</th>
+			                			<th>Tamanho Médio da Fila de Espera</th>
+			                			<th>Taxa de Ocupação</th>
 			                		</tr>
 			                		<tr>
 			                			<td>{{server1.getName()}}</td>
@@ -130,6 +131,7 @@
 			                			</td>
 			                			<td>{{server1.filaEspera.length}}</td>
 			                			<td>{{server1.avgFilaEsperaLength | number:2}}</td>
+			                			<td>{{server1.percentBusy | number:2}}%</td>
 			                		</tr>
 			                		<tr>
 			                			<td>{{server2.getName()}}</td>
@@ -139,17 +141,19 @@
 			                			</td>
 			                			<td>{{server2.filaEspera.length}}</td>
 			                			<td>{{server2.avgFilaEsperaLength | number:2}}</td>
+			                			<td>{{server2.percentBusy | number:2}}%</td>
 			                		</tr>
 			                		<tr class="active">
 			                			<td>Total</td>
 			                			<td></td>
 			                			<td>{{server1.filaEspera.length + server2.filaEspera.length}}</td>
-			                			<td>{{(server1.avgFilaEsperaLength + server2.avgFilaEsperaLength)/2 | number:2}}</td>
+			                			<td>{{(server1.avgFilaEsperaLength + server2.avgFilaEsperaLength) / 2 | number:2}}</td>
+			                			<td>{{(server1.percentBusy + server2.percentBusy) / 2 | number:2}}%</td>
 			                		</tr>
 			                	</table>
 								
-								<table class="table table-bordered table-hover">
-			                		<tr>
+								<table class="table table-bordered">
+			                		<tr class="warning">
 			                			<th>Entidade</th>
 			                			<th>Chegadas</th>
 			                			<th>Terminou</th>
@@ -179,26 +183,39 @@
 			                		</tr>
 			                	</table>
 
+			                	<table class="table table-bordered">
+									<tr class="danger">
+			                			<th>Falhas</th>
+			                			<th>Número de Falhas</th>
+			                			<th>Tempo em Falha</th>
+			                			<th>Taxa de Falha</th>
+			                			
+			                		</tr>
+			                		<tr>
+			                			<td>{{server1.getName()}}</td>
+			                			<td>{{server1.falhas}}</td>
+			                			<td>{{server1.tempoTotalFalhas/1000 | number:1}} s</td>
+			                			<td>{{server1.percentFail | number:2}}%</td>
+			                			
+			                		</tr>
+			                		<tr>
+			                			<td>{{server2.getName()}}</td>
+			                			<td>{{server2.falhas}}</td>
+			                			<td>{{server2.tempoTotalFalhas/1000 | number:1}} s</td>
+			                			<td>{{server2.percentFail | number:2}}%</td>
+			                			
+			                		</tr>
+			                		<tr class="active">
+			                			<td>Total</td>
+			                			
+			                		</tr>
+			                	</table>
+
 							</div>
 		                </div> 
 		                <!-- Panel -->
 					</div>
 					<!-- col-md-12 -->
-
-					<div class="col-md-12">
-						<div class="panel panel-default">
-			                <div class="panel-heading">
-			                    Resultados
-			                </div>
-			                <!-- /.panel-heading -->
-			                <div class="panel-body">
-			                	<table class="table table-bordered table-hover">
-			                		
-			                	</table>
-							</div>
-		                </div> 
-		                <!-- Panel -->
-					</div>
 
             	</div>
             	<!-- row -->

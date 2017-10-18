@@ -68,6 +68,7 @@ function main($scope){
 		console.log("FIM DA SIMULACAO!");
 
 		numeroMedioEntidadesFilas(server1, server2);
+		estatisticasDosStatus(server1, server2);
 		$scope.$apply();
 	}
 
@@ -135,20 +136,17 @@ function main($scope){
 			server.pushFila(entidade, $scope);
 
 		else if(status == "ready"){
-			server.pushFila(entidade, $scope);
-			consomeRecurso(server);
+			// server.pushFila(entidade, $scope);
+			consomeRecurso(server,entidade);
 		}
 	};
 
-	function consomeRecurso(server) {
+	function consomeRecurso(server, entidade) {
 		server.setStatus("busy", $scope);
 
 		let t = setInterval(
 			()=>{
 				if(flagSimulation){
-					let entidade = server.getFilaEspera()[0];
-					server.shiftFila($scope);
-					
 					console.log("Entidade", entidade, "utilizou", server.getName());
 					finalizaEntidade(entidade);
 
@@ -158,10 +156,19 @@ function main($scope){
 						server.setStatus("ready", $scope);
 						clearInterval(t);
 					}
+					else{
+						entidade = getEntidadeFila(server);
+					}
 				}
 			}, 
 			server.getTS()
 		);
+	}
+
+	function getEntidadeFila(server){
+		let entidade = server.getFilaEspera()[0];
+		server.shiftFila($scope);
+		return entidade;
 	}
 
 	function finalizaEntidade(entidade){
@@ -204,8 +211,10 @@ function main($scope){
 		let t = setInterval(()=>{
 			clearInterval(t);
 			if(flagSimulation) {
-				if(server.getFilaEspera().length)
-					consomeRecurso(server);
+				if(server.getFilaEspera().length){
+					let entidade = getEntidadeFila(server);
+					consomeRecurso(server, entidade);
+				}
 				else
 					server.setStatus("ready", $scope);
 

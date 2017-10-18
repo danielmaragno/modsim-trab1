@@ -16,7 +16,13 @@ class Server {
 		// statistics
 		this.lastDate = startDate;
 		this.filaEsperaLengthTime = [];
-		this.avgFilaEsperaLength = 0;
+
+		this.statusLastChange = startDate;
+		
+		this.falhas = 0;
+		this.tempoTotalFalhas = 0;
+
+		this.tempoTotalOcupado = 0;
 	}
 
 	getName(){
@@ -40,6 +46,14 @@ class Server {
 	}
 
 	setStatus(status,$scope){
+		if(this.status == "fail")
+			this.countFails(new Date());
+		else if(this.status == "busy")
+			this.countBusy(new Date());
+		else
+			this.statusLastChange = new Date();
+
+
 		this.status = status;
 		$scope.$apply();
 	}
@@ -69,5 +83,16 @@ class Server {
 			'length': length
 		});
 		this.lastDate = currentDate;
+	}
+
+	countFails(currentDate){
+		this.falhas += 1;
+		this.tempoTotalFalhas += (currentDate - this.statusLastChange);
+		this.statusLastChange = currentDate;
+	}
+
+	countBusy(currentDate){
+		this.tempoTotalOcupado += (currentDate - this.statusLastChange);
+		this.statusLastChange = currentDate
 	}
 }
