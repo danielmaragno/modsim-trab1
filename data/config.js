@@ -38,6 +38,10 @@ var config = {
 		}
 	},
 
+	// Tamanho máximo de cada fila (-1 corresponde a tamanho infinito)
+	"SERVER1MaxFila": -1,
+	"SERVER2MaxFila": -1,
+
 	"SimulationTime": 60000
 	
 };

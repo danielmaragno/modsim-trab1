@@ -16,4 +16,13 @@ class Entidade {
 	getTChegada(){
 		return this.TChegada;
 	}
+
+	getEntroNaFila(){
+		return this.TEntrouFila;
+	}
+
+	setEntroNaFila(currentTime){
+		this.TEntrouFila = currentTime;
+	}
+
 }

@@ -168,6 +168,7 @@
 			                			<th>Terminou</th>
 			                			<th>Falhou</th>
 			                			<th>Trocou Servidor</th>
+			                			<th>Tempo Médio no Sistema</th>
 			                		</tr>
 			                		<tr>
 			                			<td>Tipo 1</td>
@@ -175,6 +176,7 @@
 			                			<td>{{entidades.tipo1Completou}}</td>
 			                			<td>{{entidades.tipo1Deletado}}</td>
 			                			<td>{{entidades.tipo1TrocaServer}}</td>
+			                			<td>{{entidades.tipo1AvgSystemTime | number:2}} ms</td>
 			                		</tr>
 			                		<tr>
 			                			<td>Tipo 2</td>
@@ -182,6 +184,7 @@
 			                			<td>{{entidades.tipo2Completou}}</td>
 			                			<td>{{entidades.tipo2Deletado}}</td>
 			                			<td>{{entidades.tipo2TrocaServer}}</td>
+			                			<td>{{entidades.tipo2AvgSystemTime | number:2}} ms</td>
 			                		</tr>
 			                		<tr class="active">
 			                			<td>Total</td>
@@ -189,6 +192,7 @@
 			                			<td>{{entidades.tipo1Completou + entidades.tipo2Completou}}</td>
 			                			<td>{{entidades.tipo1Deletado + entidades.tipo2Deletado}}</td>
 			                			<td>{{entidades.tipo1TrocaServer + entidades.tipo2TrocaServer}}</td>
+			                			<td>{{(entidades.tipo1AvgSystemTime + entidades.tipo2AvgSystemTime)/2 | number:2}} ms</td>
 			                		</tr>
 			                	</table>
 

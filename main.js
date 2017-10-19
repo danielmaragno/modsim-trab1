@@ -37,14 +37,16 @@ function main($scope){
 			R.generate(config.TS1), 
 			R.generate(config.FALHA1.entre_falhas), 
 			R.generate(config.FALHA1.em_falha),
-			startDate
+			startDate,
+			config.SERVER1MaxFila
 		);
 		server2 = new Server(
 			"SERVER 2", 
 			R.generate(config.TS2), 
 			R.generate(config.FALHA2.entre_falhas), 
 			R.generate(config.FALHA2.em_falha),
-			startDate
+			startDate,
+			config.SERVER2MaxFila
 		);
 		startFalha(server1);
 		startFalha(server2);
@@ -67,6 +69,9 @@ function main($scope){
 			"tipo2Completou": 0,
 			"tipo2Deletado": 0,
 			"tipo2TrocaServer": 0,
+
+			"tipo1TemposSistema": [],
+			"tipo2TemposSistema": [],
 		};
 
 		// Handle end of simulation
@@ -90,6 +95,7 @@ function main($scope){
 
 		numeroMedioEntidadesFilas(server1, server2);
 		estatisticasDosStatus(server1, server2);
+		estatisticaTemposEntidades(server1, server2, $scope.entidades, $scope)
 		$scope.$apply();
 	}
 
@@ -153,8 +159,11 @@ function main($scope){
 
 	function buscaRecurso(server, entidade){
 		let status = server.getStatus();
-		if(status == "busy")
-			server.pushFila(entidade, $scope);
+		if(status == "busy"){
+			// Se a fila estiver cheia deleta
+			if(!server.pushFila(entidade, $scope))
+				deleteEntidade(entidade);
+		}
 
 		else if(status == "ready"){
 			// server.pushFila(entidade, $scope);
@@ -193,10 +202,14 @@ function main($scope){
 	}
 
 	function finalizaEntidade(entidade){
-		if(entidade.getTipo() == 1)
+		if(entidade.getTipo() == 1){
 			$scope.entidades["tipo1Completou"] += 1;
-		else
+			$scope.entidades["tipo1TemposSistema"].push(new Date() - entidade.getTChegada());
+		}
+		else{
 			$scope.entidades["tipo2Completou"] += 1;
+			$scope.entidades["tipo2TemposSistema"].push(new Date() - entidade.getTChegada());
+		}
 
 		$scope.$apply();
 

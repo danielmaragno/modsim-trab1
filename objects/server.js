@@ -4,7 +4,7 @@
 
 class Server {
 
-	constructor(name, TS, TEntreFalhas, TFalha, startDate){
+	constructor(name, TS, TEntreFalhas, TFalha, startDate, filaEsperaMaxlength){
 		this.name = name;
 		this.TS = TS;
 		this.TEntreFalhas = TEntreFalhas;
@@ -12,6 +12,7 @@ class Server {
 
 		this.status = "ready";
 		this.filaEspera = [];
+		this.filaEsperaMaxlength = filaEsperaMaxlength;
 
 		// statistics
 		this.lastDate = startDate;
@@ -63,10 +64,16 @@ class Server {
 	}
 
 	pushFila(entidade, $scope){
-		this.storeFilaEsperaLengthTime(new Date(), this.filaEspera.length);
-		this.filaEspera.push(entidade);
+		if(this.filaEsperaMaxlength < 0 || this.filaEspera.length < this.filaEsperaMaxlength){
+			this.storeFilaEsperaLengthTime(new Date(), this.filaEspera.length);
+			this.filaEspera.push(entidade);
+			$scope.$apply();
+
+			return true;
+		}
+		else
+			return false;
 		
-		$scope.$apply();
 	}
 
 	shiftFila($scope){
