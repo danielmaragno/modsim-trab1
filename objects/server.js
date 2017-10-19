@@ -65,7 +65,14 @@ class Server {
 
 	pushFila(entidade, $scope){
 		if(this.filaEsperaMaxlength < 0 || this.filaEspera.length < this.filaEsperaMaxlength){
+			
+			// calcula o tamanho / tempo da fila antes de inserir nova entidade
 			this.storeFilaEsperaLengthTime(new Date(), this.filaEspera.length);
+			
+			// Seta tempo que a entidade entrou na fila
+			entidade.setTEntrouNaFila(new Date());
+			
+
 			this.filaEspera.push(entidade);
 			$scope.$apply();
 

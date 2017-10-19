@@ -169,6 +169,7 @@
 			                			<th>Falhou</th>
 			                			<th>Trocou Servidor</th>
 			                			<th>Tempo Médio no Sistema</th>
+			                			<th>Tempo Médio na Fila</th>
 			                		</tr>
 			                		<tr>
 			                			<td>Tipo 1</td>
@@ -177,6 +178,7 @@
 			                			<td>{{entidades.tipo1Deletado}}</td>
 			                			<td>{{entidades.tipo1TrocaServer}}</td>
 			                			<td>{{entidades.tipo1AvgSystemTime/1000 | number:2}} s</td>
+			                			<td>{{entidades.tipo1AvgFilaTime/1000 | number:2}} s</td>
 			                		</tr>
 			                		<tr>
 			                			<td>Tipo 2</td>
@@ -185,6 +187,7 @@
 			                			<td>{{entidades.tipo2Deletado}}</td>
 			                			<td>{{entidades.tipo2TrocaServer}}</td>
 			                			<td>{{entidades.tipo2AvgSystemTime/1000 | number:2}} s</td>
+			                			<td>{{entidades.tipo2AvgFilaTime/1000 | number:2}} s</td>
 			                		</tr>
 			                		<tr class="active">
 			                			<td>Total</td>
@@ -193,6 +196,7 @@
 			                			<td>{{entidades.tipo1Deletado + entidades.tipo2Deletado}}</td>
 			                			<td>{{entidades.tipo1TrocaServer + entidades.tipo2TrocaServer}}</td>
 			                			<td>{{((entidades.tipo1AvgSystemTime + entidades.tipo2AvgSystemTime)/2) / 1000 | number:2}} s</td>
+			                			<td>{{((entidades.tipo1AvgFilaTime + entidades.tipo2AvgFilaTime)/2) / 1000 | number:2}} s</td>
 			                		</tr>
 			                	</table>
 

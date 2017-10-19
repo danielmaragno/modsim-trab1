@@ -72,6 +72,9 @@ function main($scope){
 
 			"tipo1TemposSistema": [],
 			"tipo2TemposSistema": [],
+
+			"tipo1TemposFila": [],
+			"tipo2TemposFila": [],
 		};
 
 		// Handle end of simulation
@@ -198,6 +201,16 @@ function main($scope){
 	function getEntidadeFila(server){
 		let entidade = server.getFilaEspera()[0];
 		server.shiftFila($scope);
+
+		// calcula tempo que ficou na fila
+		if(entidade.getTipo() == 1){
+			$scope.entidades["tipo1TemposFila"].push(new Date() - entidade.getTEntrouNaFila());
+		}
+		else{
+			$scope.entidades["tipo2TemposFila"].push(new Date() - entidade.getTEntrouNaFila());
+		}
+
+
 		return entidade;
 	}
 

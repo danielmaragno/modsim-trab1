@@ -17,11 +17,11 @@ class Entidade {
 		return this.TChegada;
 	}
 
-	getEntroNaFila(){
+	getTEntrouNaFila(){
 		return this.TEntrouFila;
 	}
 
-	setEntroNaFila(currentTime){
+	setTEntrouNaFila(currentTime){
 		this.TEntrouFila = currentTime;
 	}
 
