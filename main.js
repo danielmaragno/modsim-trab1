@@ -20,8 +20,6 @@ function main($scope){
 
 	$scope.flagSimulation = "preSimulation";
 
-	var startDate = new Date();
-
 	var TEC1 = R.generate(config.TEC1);
 	var TEC2 = R.generate(config.TEC2);
 
@@ -30,6 +28,8 @@ function main($scope){
 
 
 	function startSimulation(){
+		var startDate = new Date();
+		
 		t_chega1 = setInterval(chegaTipo1, TEC1);
 		t_chega2 = setInterval(chegaTipo2, TEC2);
 		server1 = new Server(
