@@ -23,7 +23,6 @@ function main($scope){
 	var TEC1 = R.generate(config.TEC1);
 	var TEC2 = R.generate(config.TEC2);
 
-	let t_chega1, t_chega2;
 	let server1, server2;
 	var eventos = [];
 
@@ -31,9 +30,7 @@ function main($scope){
 	function startSimulation(){
 		var startDate = new Date();
 		let evento;
-		
-		t_chega1 = setInterval(chegaTipo1, TEC1);
-		t_chega2 = setInterval(chegaTipo2, TEC2);
+
 		server1 = new Server(
 			"SERVER 1", 
 			R.generate(config.TS1), 
@@ -77,66 +74,54 @@ function main($scope){
 			"tipo2TemposFila": [],
 		};
 		var tempo = 0;
-		eventos.push(new Evento('chegada1', 0));
-		eventos.push(new Evento('chegada2', 0));
-		eventos.push(new Evento('falha', 0, null, server1));
-		eventos.push(new Evento('falha', 0, null, server2));
-		eventos.push(new Evento('fim', config.SimulationTime));
+		eventos.push(new Evento("chegada1", 0));
+		eventos.push(new Evento("chegada2", 0));
+		eventos.push(new Evento("falha", 0, null, server1));
+		eventos.push(new Evento("falha", 0, null, server2));
+		eventos.push(new Evento("fim", config.SimulationTime));
 
 		while(eventos.length > 0) {
 			evento = eventos.shift();
 			tempo = evento.getTempo();
 			switch(evento.getTipo) {
-				case 'chegada1':
+				case "chegada1":
 					chegaTipo1();
 					break;
 				
-				case 'chegada2':
+				case "chegada2":
 					chegaTipo2();
 					break;
 				
-				case 'falha':
+				case "falha":
 					startFalha(evento.getServidor());
 					break;
 				
-				case 'repara':
+				case "repara":
 					handleFalha(evento.getServidor());
 					break;
 				
-				case 'buscaRecurso':
+				case "buscaRecurso":
 					direcionaEntidade(evento.getEntidade());
 					break;
 				
-				case 'consome':
-					consomeRecurso(evento.getServidor(), evento.getEntidade());
+				case "consome":
+					buscaRecurso(evento.getServidor(), evento.getEntidade());
 					break;
 				
-				case 'fimEntidade':
-					finalizaEntidade(evento.getEntidade())
+				case "fimEntidade":
+					finalizaEntidade(evento.getEntidade());
 					break;
 				
-				case 'fim':
-					encerraSimulacao()
+				case "fim":
+					encerraSimulacao();
 					break;
 
 			}
 		}
-
-		// Handle end of simulation
-		/*let t = setInterval(()=>{
-			encerraSimulacao(t);
-		}, config.SimulationTime);*/
 	};
-
-	
-
-	
-
 
 	function encerraSimulacao(t){
 		$scope.flagSimulation = false;
-		clearInterval(t_chega1);
-		clearInterval(t_chega2);
 		clearInterval(t);
 		delete startFalha;
 		console.log("FIM DA SIMULACAO!");
@@ -149,8 +134,6 @@ function main($scope){
 
 	function encerraSimulacao(){
 		$scope.flagSimulation = false;
-		clearInterval(t_chega1);
-		clearInterval(t_chega2);
 		delete startFalha;
 		console.log("FIM DA SIMULACAO!");
 
@@ -165,18 +148,17 @@ function main($scope){
 	function chegaTipo1 () {
 		let entidade = new Entidade(1, tempo);
 		console.log("chegou tipo 1", entidade);
-		direcionaEntidade(entidade);
+		insereEvento(new Evento("buscaRecurso", tempo + R.generate(TEC1), entidade));
 		
 	}
 
 	function chegaTipo2 () {
 		let entidade = new Entidade(2, tempo);
 		console.log("chegou tipo 2", entidade);
-		direcionaEntidade(entidade);
+		insereEvento(new Evento("buscaRecurso", tempo + R.generate(TEC2), entidade));
 	}
 
 	// Setup PROCESSAMENTO
-
 
 	function direcionaEntidade(entidade){
 		
@@ -184,11 +166,11 @@ function main($scope){
 			$scope.entidades["tipo1Chegada"] += 1;
 
 			if(server1.getStatus() != "fail")
-				buscaRecurso(server1, entidade);
+				insereEvento(new Evento("consome", tempo, entidade, server1));
 			
 			else if(server2.getStatus() != "fail"){
 				$scope.entidades.tipo1TrocaServer += 1;
-				buscaRecurso(server2, entidade);
+				insereEvento(new Evento("consome", tempo, entidade, server2));
 			}
 			
 			else{
@@ -202,16 +184,16 @@ function main($scope){
 			$scope.entidades["tipo2Chegada"] += 1;
 
 			if(server2.getStatus() != "fail")
-				buscaRecurso(server2, entidade);
+				insereEvento(new Evento("consome", tempo, entidade, server2));
 			
 			else if(server1.getStatus() != "fail"){
 				$scope.entidades.tipo2TrocaServer += 1;
-				buscaRecurso(server1, entidade);
+				insereEvento(new Evento("consome", tempo, entidade, server1));
 			}
 			
 			else{
 				console.log("DELETE", entidade);
-				deleteEntidade(entidade)
+				deleteEntidade(entidade);
 			}
 		}
 
@@ -234,26 +216,19 @@ function main($scope){
 
 	function consomeRecurso(server, entidade) {
 		server.setStatus("busy", $scope);
+		if($scope.flagSimulation){
+			console.log("Entidade", entidade, "utilizou", server.getName());
+			tempoApos = tempo + R.generate(server.getTS());
+			insereEvento(new Evento("fimEntidade", tempoApos));
 
-		let t = setInterval(
-			()=>{
-				if($scope.flagSimulation){
-					console.log("Entidade", entidade, "utilizou", server.getName());
-					finalizaEntidade(entidade);
-
-					if(server.getStatus() == "fail")
-						clearInterval(t);
-					else if(!server.getFilaEspera().length){
-						server.setStatus("ready", $scope);
-						clearInterval(t);
-					}
-					else{
-						entidade = getEntidadeFila(server);
-					}
-				}
-			}, 
-			server.getTS()
-		);
+			if(server.getStatus() != "fail" && !server.getFilaEspera().length){
+				server.setStatus("ready", $scope);
+			}
+			else{
+				entidade = getEntidadeFila(server);
+				insereEvento(new Evento("consome", tempoApos, entidade, server) );
+			}
+		}
 	}
 
 	function getEntidadeFila(server){
@@ -301,35 +276,25 @@ function main($scope){
 	// Setup FALHAS
 
 	function startFalha(server){
-		let t = setInterval(()=>{
-			clearInterval(t);
-			if($scope.flagSimulation) {
-				server.setStatus("fail", $scope);
-				console.log(server.getName(),"FALHOU");
-				handleFalha(server);
-			}
-
-		}, server.getTEntreFalhas());
+		if($scope.flagSimulation) {
+			server.setStatus("fail", $scope);
+			console.log(server.getName(),"FALHOU");
+			insereEvento("reparo", tempo + R.generate(server.getTFalha()));
+		}
 	};
 
 	function handleFalha(server){
-		let t = setInterval(()=>{
-			clearInterval(t);
-			if($scope.flagSimulation) {
-				if(server.getFilaEspera().length){
-					let entidade = getEntidadeFila(server);
-					consomeRecurso(server, entidade);
-				}
-				else
-					server.setStatus("ready", $scope);
-
-				console.log(server.getName(),"OK");
-				startFalha(server);
+		if($scope.flagSimulation) {
+			if(server.getFilaEspera().length){
+				let entidade = getEntidadeFila(server);
+				insereEvento("consome", tempo, entidade, server);
 			}
+			else
+				server.setStatus("ready", $scope);
 
-
-
-		}, server.getTFalha());
+			console.log(server.getName(),"OK");
+			insereEvento("falha", tempo + R.generate(server.getTEntreFalhas()), null, server);
+		}
 	};
 
 	function insereEvento(evento) {
