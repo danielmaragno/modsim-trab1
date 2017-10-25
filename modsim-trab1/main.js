@@ -74,11 +74,11 @@ function main($scope){
 			"tipo2TemposFila": [],
 		};
 		var tempo = 0;
-		eventos.push(new Evento("chegada1", 0));
-		eventos.push(new Evento("chegada2", 0));
-		eventos.push(new Evento("falha", 0, null, server1));
-		eventos.push(new Evento("falha", 0, null, server2));
-		eventos.push(new Evento("fim", config.SimulationTime));
+		insereEvento(new Evento("chegada1", R.generate(TEC1), null, null));
+		insereEvento(new Evento("chegada2", R.generate(TEC2), null, null));
+		insereEvento(new Evento("falha", R.generate(server1.getTEntreFalhas()), null, server1));
+		insereEvento(new Evento("falha", R.generate(server2.getTEntreFalhas()), null, server2));
+		insereEvento(new Evento("fim", config.SimulationTime, null, null));
 
 		while(eventos.length > 0) {
 			evento = eventos.shift();
@@ -148,14 +148,15 @@ function main($scope){
 	function chegaTipo1 () {
 		let entidade = new Entidade(1, tempo);
 		console.log("chegou tipo 1", entidade);
-		insereEvento(new Evento("buscaRecurso", tempo + R.generate(TEC1), entidade));
+		insereEvento(new Evento("buscaRecurso", tempo, entidade, null));
+		insereEvento(new Evento("chegada1", tempo + R.generate(TEC1), null, null));		
 		
 	}
 
 	function chegaTipo2 () {
 		let entidade = new Entidade(2, tempo);
 		console.log("chegou tipo 2", entidade);
-		insereEvento(new Evento("buscaRecurso", tempo + R.generate(TEC2), entidade));
+		insereEvento(new Evento("buscaRecurso", tempo + R.generate(TEC2), entidade, null));
 	}
 
 	// Setup PROCESSAMENTO
@@ -219,7 +220,7 @@ function main($scope){
 		if($scope.flagSimulation){
 			console.log("Entidade", entidade, "utilizou", server.getName());
 			tempoApos = tempo + R.generate(server.getTS());
-			insereEvento(new Evento("fimEntidade", tempoApos));
+			insereEvento(new Evento("fimEntidade", tempoApos, null, null));
 
 			if(server.getStatus() != "fail" && !server.getFilaEspera().length){
 				server.setStatus("ready", $scope);
@@ -279,7 +280,7 @@ function main($scope){
 		if($scope.flagSimulation) {
 			server.setStatus("fail", $scope);
 			console.log(server.getName(),"FALHOU");
-			insereEvento("reparo", tempo + R.generate(server.getTFalha()));
+			insereEvento(new Evento("reparo", tempo + R.generate(server.getTFalha()), null, null));
 		}
 	};
 
@@ -287,13 +288,13 @@ function main($scope){
 		if($scope.flagSimulation) {
 			if(server.getFilaEspera().length){
 				let entidade = getEntidadeFila(server);
-				insereEvento("consome", tempo, entidade, server);
+				insereEvento(new Evento("consome", tempo, entidade, server));
 			}
 			else
 				server.setStatus("ready", $scope);
 
 			console.log(server.getName(),"OK");
-			insereEvento("falha", tempo + R.generate(server.getTEntreFalhas()), null, server);
+			insereEvento(new Evento("falha", tempo + R.generate(server.getTEntreFalhas()), null, server));
 		}
 	};
 

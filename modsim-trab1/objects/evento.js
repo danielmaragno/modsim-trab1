@@ -4,20 +4,6 @@
 
 class Evento {
 
-    constructor(Tipo, Tempo){
-        this.Tipo = Tipo;
-        this.Tempo = Tempo;
-        this.Entidade = null;
-        this.Servidor = null;
-    }
-
-    constructor(Tipo, Tempo, Entidade) {
-        this.Tipo = Tipo;
-        this.Tempo = Tempo;
-        this.Entidade = Entidade;
-        this.Servidor = null;
-    }
-
     constructor(Tipo, Tempo, Entidade, Servidor) {
         this.Tipo = Tipo;
         this.Tempo = Tempo;
