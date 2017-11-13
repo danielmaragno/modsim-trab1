@@ -6,10 +6,15 @@ app.controller('Controller', main);
 
 // MAIN SETUP
 function main($scope){
+	$('#modal').modal('show');
+
 	$scope.handleStartEndButtonClick = function(){
+		
 		if($scope.flagSimulation == "preSimulation"){
+			$('#modal').modal('hide');
+
 			$scope.flagSimulation = true;
-			startSimulation();
+			startSimulation(calculaConfig());
 		}
 		else if($scope.flagSimulation){
 			encerraSimulacao();
@@ -20,14 +25,16 @@ function main($scope){
 
 	$scope.flagSimulation = "preSimulation";
 
-	var TEC1 = R.generate(config.TEC1);
-	var TEC2 = R.generate(config.TEC2);
 
 	let t_chega1, t_chega2;
 	let server1, server2;
 
 
-	function startSimulation(){
+	function startSimulation(config){
+		
+		var TEC1 = R.generate(config.TEC1);
+		var TEC2 = R.generate(config.TEC2);
+		
 		var startDate = new Date();
 		
 		t_chega1 = setInterval(chegaTipo1, TEC1);

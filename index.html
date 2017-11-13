@@ -25,6 +25,248 @@
 	    </div>
 	  </div>
 	</nav>
+
+	<!-- MODAL -->
+	<div id="modal" class="modal fade" tabindex="-1" role="dialog">
+	  <div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">Setup Inicial</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>
+	        	<h4><span class="label label-default">Todos os tempos serão calculados em milissegundos</span></h4>
+	        	<h4><span class="label label-default">Utilize as variáveis "a", "b" e "c" conforme necessário</span></h4>
+	        </p>
+	        <p style="margin-top: 30px;">
+	        	<form class="form-horizontal">
+	        		
+	        		<!-- TEC1 -->
+	        		<div class="form-group" id="TEC1">
+	        			<label class="col-md-3">TEC1</label>
+	        			<div class="col-md-3">
+	        				<select class="form-control" name="metodo">
+	        					<option value="">MÉTODO</option>
+	        					<option value="constante">constante</option>
+	        					<option value="exponencial">exponencial</option>
+	        					<option value="uniforme">uniforme</option>
+	        					<option value="normal">normal</option>
+	        					<option value="triangular">triangular</option>
+	        				</select>
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="a" placeholder="a">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="b" placeholder="b">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="c" placeholder="c">
+	        			</div>
+	        		</div>
+
+	        		<!-- TEC2 -->
+	        		<div class="form-group" id="TEC2">
+	        			<label class="col-md-3">TEC2</label>
+	        			<div class="col-md-3">
+	        				<select class="form-control" name="metodo">
+	        					<option value="">MÉTODO</option>
+	        					<option value="constante">constante</option>
+	        					<option value="exponencial">exponencial</option>
+	        					<option value="uniforme">uniforme</option>
+	        					<option value="normal">normal</option>
+	        					<option value="triangular">triangular</option>
+	        				</select>
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="a" placeholder="a">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="b" placeholder="b">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="c" placeholder="c">
+	        			</div>
+	        		</div>
+
+	        		<!-- TS1 -->
+	        		<div class="form-group" id="TS1">
+	        			<label class="col-md-3">TS1</label>
+	        			<div class="col-md-3">
+	        				<select class="form-control" name="metodo">
+	        					<option value="">MÉTODO</option>
+	        					<option value="constante">constante</option>
+	        					<option value="exponencial">exponencial</option>
+	        					<option value="uniforme">uniforme</option>
+	        					<option value="normal">normal</option>
+	        					<option value="triangular">triangular</option>
+	        				</select>
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="a" placeholder="a">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="b" placeholder="b">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="c" placeholder="c">
+	        			</div>
+	        		</div>
+
+	        		<!-- TS2 -->
+	        		<div class="form-group" id="TS2">
+	        			<label class="col-md-3">TS2</label>
+	        			<div class="col-md-3">
+	        				<select class="form-control" name="metodo">
+	        					<option value="">MÉTODO</option>
+	        					<option value="constante">constante</option>
+	        					<option value="exponencial">exponencial</option>
+	        					<option value="uniforme">uniforme</option>
+	        					<option value="normal">normal</option>
+	        					<option value="triangular">triangular</option>
+	        				</select>
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="a" placeholder="a">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="b" placeholder="b">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="c" placeholder="c">
+	        			</div>
+	        		</div>
+
+	        		<!-- Falha 1 -->
+	        		<div class="form-group" id="Falha1_entre_falhas">
+	        			<label class="col-md-3">Tempo Entre Falhas 1</label>
+	        			<div class="col-md-3">
+	        				<select class="form-control" name="metodo">
+	        					<option value="">MÉTODO</option>
+	        					<option value="constante">constante</option>
+	        					<option value="exponencial">exponencial</option>
+	        					<option value="uniforme">uniforme</option>
+	        					<option value="normal">normal</option>
+	        					<option value="triangular">triangular</option>
+	        				</select>
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="a" placeholder="a">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="b" placeholder="b">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="c" placeholder="c">
+	        			</div>
+	        		</div>
+
+	        		<div class="form-group" id="Falha1_em_falha">
+	        			<label class="col-md-3">Tempo de Falha 1</label>
+	        			<div class="col-md-3">
+	        				<select class="form-control" name="metodo">
+	        					<option value="">MÉTODO</option>
+	        					<option value="constante">constante</option>
+	        					<option value="exponencial">exponencial</option>
+	        					<option value="uniforme">uniforme</option>
+	        					<option value="normal">normal</option>
+	        					<option value="triangular">triangular</option>
+	        				</select>
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="a" placeholder="a">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="b" placeholder="b">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="c" placeholder="c">
+	        			</div>
+	        		</div>
+
+	        		<!-- Falha 2 -->
+	        		<div class="form-group" id="Falha2_entre_falhas">
+	        			<label class="col-md-3">Tempo Entre Falhas 2</label>
+	        			<div class="col-md-3">
+	        				<select class="form-control" name="metodo">
+	        					<option value="">MÉTODO</option>
+	        					<option value="constante">constante</option>
+	        					<option value="exponencial">exponencial</option>
+	        					<option value="uniforme">uniforme</option>
+	        					<option value="normal">normal</option>
+	        					<option value="triangular">triangular</option>
+	        				</select>
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="a" placeholder="a">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="b" placeholder="b">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="c" placeholder="c">
+	        			</div>
+	        		</div>
+
+	        		<div class="form-group" id="Falha2_em_falha">
+	        			<label class="col-md-3">Tempo de Falha 2</label>
+	        			<div class="col-md-3">
+	        				<select class="form-control" name="metodo">
+	        					<option value="">MÉTODO</option>
+	        					<option value="constante">constante</option>
+	        					<option value="exponencial">exponencial</option>
+	        					<option value="uniforme">uniforme</option>
+	        					<option value="normal">normal</option>
+	        					<option value="triangular">triangular</option>
+	        				</select>
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="a" placeholder="a">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="b" placeholder="b">
+	        			</div>
+	        			<div class="col-md-2">
+	        				<input class="form-control" name="c" placeholder="c">
+	        			</div>
+	        		</div>
+
+
+	        		<!-- MAX Fila 1 -->
+	        		<div class="form-group" id="SERVER1MaxFila">
+	        			<label class="col-md-3">Tamanho Máximo da Fila 1</label>
+	        			<div class="col-md-9">
+	        				<input class="form-control" placeholder="" value="0">
+	        			</div>
+	        		</div>
+
+	        		<!-- MAX Fila 2 -->
+	        		<div class="form-group" id="SERVER2MaxFila">
+	        			<label class="col-md-3">Tamanho Máximo da Fila 2</label>
+	        			<div class="col-md-9">
+	        				<input class="form-control" placeholder="" value="0">
+	        			</div>
+	        		</div>
+
+	        		<!-- Duração da Simulação -->
+	        		<div class="form-group" id="SimulationTime">
+	        			<label class="col-md-3">Duração da Simulação</label>
+	        			<div class="col-md-9">
+	        				<input class="form-control" placeholder="" value="0">
+	        			</div>
+	        		</div>
+
+	        	</form>
+	        </p>
+
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-success" ng-click="handleStartEndButtonClick()">Iniciar Simulação</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 	
 	<div class="container">
 		<div class="row">
@@ -247,12 +489,15 @@
 	</div>
 
 	<script src="components/angular1.6.4.min.js"></script>
+	<script src="components/jquery-3.2.1.min.js"></script>
+	<script src="components/bootstrap3.3.7.min.js"></script>
 
 	<script type="text/javascript" src="data/config.js"></script>
 	<script type="text/javascript" src="lib/randomGen.js"></script>
 	<script type="text/javascript" src="lib/statistics.js"></script>
 	<script type="text/javascript" src="objects/entidade.js"></script>
 	<script type="text/javascript" src="objects/server.js"></script>
+	<script type="text/javascript" src="calculaConfig.js"></script>
 	<script type="text/javascript" src="main.js"></script>
 </body>
 </html>

@@ -1,20 +1,24 @@
-var config = {
+var CONFIG = {
 	"TEC1": {
-		"metodo": "constante",
-		"valor": 3000
+		"metodo": "exponencial",
+		"a": 0.0001
 	},
 	"TEC2": {
-		"metodo": "constante",
-		"valor": 4000
+		"metodo": "uniforme",
+		"a": 3500,
+		"b": 5000
 	},
 
 	"TS1": {
-		"metodo": "constante",
-		"valor": 1000
+		"metodo": "normal",
+		"media": 1000,
+		"desvio": 100
 	},
 	"TS2": {
-		"metodo": "constante",
-		"valor": 1000
+		"metodo": "triangular",
+		"a": 800,
+		"b": 1200,
+		"c": 1500
 	},
 	"FALHA1": {
 		"entre_falhas": {
